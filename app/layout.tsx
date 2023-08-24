@@ -1,3 +1,4 @@
+import Nav from "@/components/Nav";
 import "@/styles/globals.css"
 import { Metadata } from 'next'
 
@@ -19,6 +20,7 @@ const RootLayout = ({ children }: Props) => {
         </div>
 
         <main className='app'>
+          <Nav />
           {children}
         </main>
       </body>
