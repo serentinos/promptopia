@@ -1,6 +1,8 @@
 import Nav from "@/components/Nav";
+import Provider from "@/components/Provider";
 import "@/styles/globals.css"
 import { Metadata } from 'next'
+import { Session } from "next-auth";
 
 export const metadata: Metadata = {
   title: 'Promptopia',
@@ -9,20 +11,23 @@ export const metadata: Metadata = {
 
 interface Props {
   children: React.ReactNode;
+  session: Session
 }
 
-const RootLayout = ({ children }: Props) => {
+const RootLayout = ({ children, session }: Props) => {
   return (
     <html lang='en'>
       <body>
-        <div className='main'>
-          <div className='gradient' />
-        </div>
+        <Provider session={session}>
+          <div className='main'>
+            <div className='gradient' />
+          </div>
 
-        <main className='app'>
-          <Nav />
-          {children}
-        </main>
+          <main className='app'>
+            <Nav />
+            {children}
+          </main>
+        </Provider>
       </body>
     </html>
   )
