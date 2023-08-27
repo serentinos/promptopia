@@ -20,7 +20,7 @@ export const POST = async (req: Request, res: Response) => {
     })
   } catch (error) {
     console.log(error)
-    return new Response("Failed to create new Responce", {
+    return new Response("Failed to create new Prompt", {
       status: 501,
     })
   }
