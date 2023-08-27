@@ -9,7 +9,7 @@ const Home = () => {
         <span className="orange_gradient">AI-Powered prompts</span>
       </h1>
 
-      <p className="desc text-center">Promptopia it an open-source AI programming tool</p>
+      <p className="desc text-center">Promptopia it an open-source AI programming tool for storing ai prompts</p>
 
       <Feed />
     </section>

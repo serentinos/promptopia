@@ -4,7 +4,7 @@ import Link from 'next/link'
 import React, { FormEvent } from 'react'
 
 interface Props {
-  type: 'Create',
+  type: 'Create' | 'Update',
   post: Prompt,
   setPost: React.Dispatch<React.SetStateAction<Prompt>>,
   submitting: boolean,

@@ -16,22 +16,35 @@ const MyProfile = () => {
     router.push(`/update-prompt?id=${post._id}`)
   };
 
-  const handleDelete = async () => {
+  const handleDelete = async (post: PromptFromServer) => {
+    const hasConfirmed = confirm('Are you shure you want to delete this prompt?');
 
-  };
-
-  useEffect(() => {
-    const fetchPosts = async () => {
+    if (hasConfirmed) {
       try {
-        const res = await fetch(`/api/users/${session?.user?.id}/posts`);
-        const data = await res.json();
+        await fetch(`/api/prompt/${post._id.toString()}`, {
+          method: 'DELETE'
+        })
 
-        setPosts(data);
+        fetchPosts();
       } catch (error) {
         console.log(error);
+        alert('Unable to delete post')
       }
     }
+  };
 
+  const fetchPosts = async () => {
+    try {
+      const res = await fetch(`/api/users/${session?.user?.id}/posts`);
+      const data = await res.json();
+
+      setPosts(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
     if (session?.user?.id) {
       fetchPosts();
     }
