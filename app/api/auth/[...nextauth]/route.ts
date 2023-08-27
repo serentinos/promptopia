@@ -1,9 +1,8 @@
-import NextAuth from "next-auth";
+import NextAuth, { DefaultSession } from "next-auth";
 import { Profile, Session, SessionOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google'
 import { connectToDB } from '@/utils/db';
 import User from "@/models/user"
-
 
 const handler = NextAuth({
   providers: [

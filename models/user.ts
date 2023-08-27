@@ -1,12 +1,6 @@
 import { Schema, model, models } from "mongoose";
 
-export interface IUser {
-  email: string,
-  username: string,
-  image: string,
-}
-
-const UserSchema = new Schema<IUser>({
+const UserSchema = new Schema({
   email: {
     type: String,
     unique: true,
