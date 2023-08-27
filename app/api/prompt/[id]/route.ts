@@ -2,6 +2,7 @@
 
 import Prompt from "@/models/prompt";
 import { connectToDB } from "@/utils/db";
+import { formatTag } from "@/utils/formatTag";
 import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
 
 // Patch (update)
@@ -40,7 +41,7 @@ export const PATCH = async (req: Request, { params }: Params) => {
 
     const newPrompt = await Prompt.findOneAndUpdate({
       _id: id
-    }, { prompt, tag }, { new: true }).populate('creator');
+    }, { prompt, tag: formatTag(tag) }, { new: true }).populate('creator');
 
     if (!newPrompt) {
       return new Response('Prompt not found', { status: 404 });

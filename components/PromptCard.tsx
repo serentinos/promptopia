@@ -3,6 +3,7 @@
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import React, { FC, useState } from 'react'
 
 interface Props {
@@ -18,10 +19,10 @@ const PromptCard:FC<Props> = ({
   handleEdit,
   handleDelete,
 }) => {
-  console.log(post);
   const [copied, setCopied] = useState('');
   const { data: session } = useSession();
   const pathname = usePathname();
+  const router = useRouter();
 
   const isPostCreatedByCurrentUserSession = String(session?.user?.id) === String(post.creator._id);
   const isIsProfilePage = pathname === '/profile';
@@ -31,11 +32,20 @@ const PromptCard:FC<Props> = ({
     navigator.clipboard.writeText(post.prompt);
     setTimeout(() => setCopied(''), 3000);
   }
+
+  const handleGoToProfile = (id: number) => {
+    if(!isIsProfilePage) {
+      router.push(`/profile/${id}`)
+    }
+  };
   
   return (
     <div className='prompt_card'>
       <div className='flex justify-between items-start gap-5'>
-        <div className='flex-1 flex justify-start items-center gap-3 cursor-pointer'>
+        <div 
+          className='flex-1 flex justify-start items-center gap-3 cursor-pointer'
+          onClick={() => handleGoToProfile(post.creator._id)}
+        >
           <Image 
             src={post.creator.image}
             alt='Author avatar'
@@ -56,8 +66,7 @@ const PromptCard:FC<Props> = ({
               {post.creator.email}
             </p>
           </div>
-
-          
+        
         </div>
 
         <div
@@ -82,7 +91,7 @@ const PromptCard:FC<Props> = ({
         className='font-inter text-sm blue_gradient cursor-pointer'
         onClick={() => handleTagClick && handleTagClick(post.tag)}
       >
-        {post.tag}
+        #{post.tag}
       </p>
 
       {isPostCreatedByCurrentUserSession

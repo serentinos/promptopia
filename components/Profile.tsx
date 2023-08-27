@@ -5,8 +5,8 @@ interface Props {
   name: string,
   desc: string,
   data: PromptFromServer[],
-  handleEdit: (post: PromptFromServer) => void
-  handleDelete: (post: PromptFromServer) => void
+  handleEdit?: (post: PromptFromServer) => void
+  handleDelete?: (post: PromptFromServer) => void
 }
 
 const Profile:FC<Props> = ({

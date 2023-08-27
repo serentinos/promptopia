@@ -1,13 +1,14 @@
 'use client'
 
-import React, { ChangeEvent, FC } from 'react'
+import React, { ChangeEvent, FC, useCallback, useMemo } from 'react'
 
 import { useState, useEffect } from 'react';
 import PromptCard from './PromptCard';
+import { debounce } from '@/utils/debounce';
 
 interface PromptCardListProps {
   data: PromptFromServer[],
-  handleTagClick: () => void
+  handleTagClick: React.Dispatch<React.SetStateAction<string>>
 }
 
 const PromptCardList:FC<PromptCardListProps> = ({ data, handleTagClick }) => {
@@ -26,10 +27,33 @@ const PromptCardList:FC<PromptCardListProps> = ({ data, handleTagClick }) => {
 
 const Feed = () => {
   const [searchText, setSearchText] = useState('');
+  const [querySearch, setQuerySearch] = useState('')
   const [posts, setPosts] = useState<PromptFromServer[]>([]);
+  const searchTimeout = 500;
+
+  const filteredPosts = useMemo(() => {
+    return querySearch
+      ? posts.filter((post) => {
+        const regex = new RegExp(querySearch.trim(), 'i');
+  
+        return regex.test(post.creator.username)
+          || regex.test(post.prompt)
+          || regex.test(post.tag) 
+      })
+      : posts
+  }, [posts, querySearch])
+
+
+  const handleSearch = useCallback((textToSearch: string) => {
+    setQuerySearch(textToSearch);
+  }, []);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleDebouncedSearch = useCallback(debounce(handleSearch, searchTimeout), []);
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
+    handleDebouncedSearch(searchText);
   };
 
   useEffect(() => {
@@ -46,6 +70,10 @@ const Feed = () => {
 
     fetchPosts();
   }, [])
+
+  useEffect(() => {
+    handleDebouncedSearch(searchText);
+  }, [handleDebouncedSearch, searchText]);
   
   return (
     <section className='feed'>
@@ -61,8 +89,8 @@ const Feed = () => {
       </form>
 
       <PromptCardList 
-        data={posts}
-        handleTagClick={() => {}}
+        data={filteredPosts}
+        handleTagClick={setSearchText}
       />
     </section>
   )
