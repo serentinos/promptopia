@@ -6,9 +6,10 @@ import { formatTag } from "@/utils/formatTag";
 export const POST = async (req: Request, res: Response) => {
   const { userId, prompt, tag } = await req.json();
   const formatedTag = formatTag(tag);
+  await connectToDB();
+
 
   try {
-    await connectToDB();
     const newPrompt = new Prompt({
       creator: userId,
       prompt,

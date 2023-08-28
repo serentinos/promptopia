@@ -5,8 +5,8 @@ import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
 export const GET = async (reguest: Request, { params }: Params) => {
   const { userId } = params;
   
+  await connectToDB();
   try {
-    await connectToDB();
 
     const prompts = await Prompt.find({
       creator: userId

@@ -10,9 +10,10 @@ import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
 // Delete (delete)
 export const GET = async (reguest: Request, { params }: Params) => {
   const { id } = params;
-  
+  await connectToDB();
+
+
   try {
-    await connectToDB();
 
     const prompt = await Prompt.findOne({
       _id: id
@@ -35,9 +36,9 @@ export const GET = async (reguest: Request, { params }: Params) => {
 export const PATCH = async (req: Request, { params }: Params) => {
   const { id } = params;
   const { prompt, tag } = await req.json();
-  
+  await connectToDB();
+
   try {
-    await connectToDB();
 
     const newPrompt = await Prompt.findOneAndUpdate({
       _id: id
@@ -60,9 +61,9 @@ export const PATCH = async (req: Request, { params }: Params) => {
 
 export const DELETE = async (reg: Request, { params }: Params) => {
   const { id } = params;
-  
+  await connectToDB();
+
   try {
-    await connectToDB();
 
     const isDeleted = await Prompt.deleteOne({
       _id: id
