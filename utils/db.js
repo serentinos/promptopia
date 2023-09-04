@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import '@/models/prompt';
+import '@/models/user';
 
 let isConnected = false;
 
